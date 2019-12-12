@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TakeOut/>
+    <Search/>
+    <Indent/>
+    <Mine/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import Indent from './components/indent'
+import Mine from './components/mine'
+import Search from './components/search'
+import TakeOut from './components/take_out'
 export default {
   name: 'app',
   components: {
-    HelloWorld
+   Indent,
+   Mine,
+   Search,
+   TakeOut
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus" rel="stylesheet/stylus">
+  $bgColor red
+  #app
+    width 980px
+    height 1440px
+    background-color bgColor
+    font-size 30px
 </style>
