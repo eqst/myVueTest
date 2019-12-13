@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import TakeOut from '../components/take_out.vue'
-import Mine from '../components/mine'
-import Search from '../components/search'
-import Indent from '../components/indent.vue'
+import TakeOut from '../pages/takeout/take_out.vue'
+import Mine from '../pages/mine/mine'
+import Search from '../pages/search/search'
+import Indent from '../pages/indent/indent.vue'
 
 Vue.use(VueRouter)
 export default new VueRouter({

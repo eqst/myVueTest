@@ -1,6 +1,9 @@
 <template>
   <div id="app1">
-    <footer>
+    <main>
+      <router-view></router-view>
+    </main>
+    <!-- <footer>
       <ul>
         <li>
           <router-link to = "/takeout">外卖</router-link>
@@ -15,8 +18,8 @@
           <router-link to = "/mine">我的</router-link>
         </li>
       </ul>
-      <router-view></router-view>
-    </footer>
+    </footer> -->
+    <FooterGuide/>
   </div>
 </template>
 
@@ -26,14 +29,17 @@
 // import Mine from './components/mine'
 // import Search from './components/search'
 // import TakeOut from './components/take_out'
+import FooterGuide from "./components/footerGuide";
 export default {
   // name: 'app',
-  // components: {
+  components: {
   //  Indent,
   //  Mine,
   //  Search,
   //  TakeOut
-  // }
+  FooterGuide
+  },
+  template:'<FooterGuide/>'
 }
 </script>
 
