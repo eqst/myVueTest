@@ -41,7 +41,4 @@ export default {
       commit(REQ_SHOPS,shops)
     }
   }
-
-
-
 }
