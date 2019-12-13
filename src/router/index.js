@@ -5,6 +5,7 @@ import TakeOut from '../pages/takeout/take_out.vue'
 import Mine from '../pages/mine/mine'
 import Search from '../pages/search/search'
 import Indent from '../pages/indent/indent.vue'
+import Login from '../pages/login/login.vue'
 
 Vue.use(VueRouter)
 export default new VueRouter({
@@ -12,19 +13,35 @@ export default new VueRouter({
   routes:[
     {
       path:'/indent',
-      component:Indent
+      component:Indent,
+      meta:{
+        isShowFooter:true
+      }
     },
     {
       path:'/mine',
-      component:Mine
+      component:Mine,
+      meta:{
+        isShowFooter:true
+      }
     },
     {
       path:'/search',
-      component:Search
+      component:Search,
+      meta:{
+        isShowFooter:true
+      }
     },
     {
       path:'/takeout',
-      component:TakeOut
+      component:TakeOut,
+      meta: {
+        isShowFooter: true
+      }
+    },
+    {
+      path:'/login',
+      component:Login
     },
     {
       path:'/',
