@@ -12,11 +12,8 @@
         <form>
           <div class="on">
             <section class="login_message">
-              <input type="tel" maxlength="11" placeholder="手机号">
-              <input v-model="email" name="myemail" v-validate="'required|email'">
-              <span style="color: red;" v-show="errors.has('myemail')">{{ errors.first('myemail') }}</span>
-              <input v-model="phone" name="phone" v-validate="{required: true,regex: /^1\d{10}$/}">
-              <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
+              <input v-model="phone" name="phone" placeholder="手机号"  value="text">
+              <span></span>
               <button disabled="disabled" class="get_verification">获取验证码</button>
             </section>
             <section class="login_verification">
@@ -57,27 +54,17 @@
 </template>
 
 <script type="text/ecmascript-6">
-    // import VeeValidate from 'vee-validate'
-    import VeeValidate from 'vee-validate'
-    import zh_CN from 'vee-validate/dist/locale/zh_CN'
-    // const success = await this.$validator.validateAll() // 对所有表单项进行验证
-    // const success = await this.$validator.validateAll(names) // 对指定的所有表单项进行验证
-     
-
-    VeeValidate.Validator.localize('zh_CN', {
-      messages: zh_CN.messages,
-      attributes: {
-        phone: '手机号',
-        code: '验证码'
-      }
-    })
-    VeeValidate.Validator.extend('mobile', {
-      validate: value => {
-        return /^1\d{10}$/.test(value)
-      },
-      getMessage: field => field + '必须是11位手机号码'
-    })
+  import Vue from "vue"
+  import VeeValidate from 'vee-validate'
+  import zh_CN from 'vee-validate/dist/locale/zh_CN'
+  
   export default {
+    data(){
+      return {
+        phone:'',
+        value:'',
+      }
+    }
   }
 </script>
 

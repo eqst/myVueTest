@@ -9,7 +9,7 @@
       </span> 
     </Header>
     <nav class="msite_nav border-1px">
-      <div ref = "categ"class="swiper-container">
+      <div ref = "categ" class="swiper-container" v-if="categorysArr.length">
         <div class="swiper-wrapper">
           <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key = "index">
             <div class="link_to_food" v-for="(category, index) in categorys" :key="index">
@@ -24,8 +24,9 @@
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
+      <img src ="./../../assets/images/msite_back.svg" v-else/>
     </nav>
-    <div class="msite_shop_list border-1px">
+    <div class="msite_shop_list border-1px" v-if="shops.length">
       <div class="shop_header">
         <i class="iconfont icon-xuanxiang"></i>
         <span class="shop_header_title">附近商家</span>
@@ -78,6 +79,18 @@
         </ul>
       </div>
     </div>
+    <div v-else>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+      <img src ="./../../assets/images/shop_back.svg"/>
+    </div>
   </div>
   </div>
 </template>
@@ -124,18 +137,18 @@
         loop: true
       })
     },
-    // watch:{
-    //   categorys () {
-    //     this.$nextTick (()=>{
-    //       new Swiper(this.$refs.categ, {
-    //         pagination: {
-    //           el: '.swiper-pagination',
-    //         },
-    //         loop: true
-    //       })
-    //     })
-    //   }
-    // }
+    watch:{
+      categorys () {
+        this.$nextTick (()=>{
+          new Swiper(this.$refs.categ, {
+            pagination: {
+              el: '.swiper-pagination',
+            },
+            loop: true
+          })
+        })
+      }
+    }
   }
 </script>
 
