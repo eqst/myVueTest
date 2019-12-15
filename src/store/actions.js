@@ -1,5 +1,5 @@
 
-import Vue from 'vue'
+// import Vue from 'vue'
 import {
   reqAdress,
   reqCategorys,
@@ -17,6 +17,7 @@ export default {
     //从状态中获取经纬度
     const {longitude, latitude} =state
     const result = await reqAdress(longitude, latitude)
+    // console.log(result);
     if (result.code === 0) {
       const address = result.data
       commit(REQ_ADDRESS,address)
@@ -26,6 +27,7 @@ export default {
   async getCategorys ({commit}){
     //从状态中商品分类列表
     const result = await reqCategorys()
+    // console.log(result);
     if (result.code === 0) {
       const categorys = result.data
       commit(REQ_CATEGORYS,categorys)
@@ -36,6 +38,7 @@ export default {
     //从状态中获取经纬度
     const {longitude, latitude} =state
     const result = await reqShops(longitude, latitude)
+    // console.log(result);
     if (result.code === 0) {
       const shops = result.data
       commit(REQ_SHOPS,shops)

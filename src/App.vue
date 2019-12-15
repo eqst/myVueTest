@@ -13,7 +13,10 @@ export default {
   components: {
   FooterGuide,
   Header
-  }
+  },
+  mounted() {
+    this.$store.dispatch('getAddress')
+  },
 }
 </script>
 

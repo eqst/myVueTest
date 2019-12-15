@@ -303,17 +303,55 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import {mapState} from 'vuex'
+  import chunk from 'lodash/chunk'
   import Swiper from 'swiper'
   import 'swiper/css/swiper.min.css'
   export default {
+    computed: {
+      ...mapState(['address','categorys','shops']),
+      categorysArr () {
+        const { categorys } = this
+        // 二维数组
+        const bigArr = []
+        let smallArr = []
+
+        // 遍历总的一维数组
+        categorys.forEach(c => {
+          // 将小数组放入大数组中(只保存一次)
+          if (smallArr.length===0) {
+            bigArr.push(smallArr)
+          }
+
+          // 将c保存小数组
+          smallArr.push(c)
+
+          // 小数组的长度最大是8  ==> 如果小数组满, 创建一个新的小数组
+          if (smallArr.length===8) {
+            smallArr = []
+          }
+        })
+
+        // 返回二维数组
+        return bigArr
+      },
+      // 使用lodash库实现
+      categorysArr2 () {
+        // return _.chunk(this.categorys, 8)
+        return chunk(this.categorys, 8)
+      }
+    },
     mounted () {
+      this.$store.dispatch('getCategorys')
+      this.$store.dispatch('getShops')
+      
       new Swiper('.swiper-container', {
         pagination: {
           el: '.swiper-pagination',
         },
         loop: true
       })
-    }
+    },
   }
 </script>
 

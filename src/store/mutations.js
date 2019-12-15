@@ -5,13 +5,13 @@ import {
 } from './mutation_type'
 
 export default {
-  [REQ_ADDRESS](){
+  [REQ_ADDRESS](state,address){
     state.address = address
   },
-  [REQ_CATEGORYS](){
+  [REQ_CATEGORYS](state,categorys){
     state.categorys = categorys
   },
-  [REQ_SHOPS](){
+  [REQ_SHOPS](state,shops){
     state.shops = shops
   }
 }
