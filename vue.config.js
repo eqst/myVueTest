@@ -42,7 +42,6 @@ configureWebpack:{
         changeOrigin: true, // 支持跨域, 如果协议/主机也不相同, 必须加上
       },
     },
-
     historyApiFallback: true, // 任意的 404 响应都被替代为 index.html
   },
   

@@ -1,108 +1,25 @@
 <template>
   <div class="msite">
+    <Header :title="address.name || '定位中...'">
+      <span class="header_login" slot="right" @click="$router.replace('/login')">
+        <span class="header_login_text">登录|注册</span>
+      </span>
+      <span class="header_search" slot="left" @click="$router.replace('/search')">
+        <i class="iconfont icon-sousuo"></i>
+      </span> 
+    </Header>
     <nav class="msite_nav border-1px">
-      <div class="swiper-container">
+      <div ref = "categ"class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
+          <div class="swiper-slide" v-for="(categorys,index) in categorysArr" :key = "index">
+            <div class="link_to_food" v-for="(category, index) in categorys" :key="index">
               <div class="food_container">
-                <img src="../../assets/images/nav/1.jpg">
+                <img :src="'https://fuss10.elemecdn.com' + category.image_url">
               </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/2.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/3.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/4.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/5.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/6.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/7.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/8.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </a>
+              <span>{{category.title}}</span>
+            </div>
           </div>
-          <div class="swiper-slide">
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/9.jpg">
-              </div>
-              <span>甜品饮品</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/14.jpg">
-              </div>
-              <span>准时达</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </a>
-            <a href="javascript:" class="link_to_food">
-              <div class="food_container">
-                <img src="../../assets/images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </a>
-          </div>
+          
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
@@ -115,18 +32,16 @@
       </div>
       <div class="shop_container">
         <ul class="shop_list">
-          <li class="shop_li border-1px">
+          <li class="shop_li border-1px" v-for="(shop,index) in shops" :key="index">
             <a>
               <div class="shop_left">
-                <img class="shop_img" src="../../assets../../assets/images/shop/1.jpg">
+                <img class="shop_img" :src="'https://fuss10.elemecdn.com'+shop.image_path">
               </div>
               <div class="shop_right">
                 <section class="shop_detail_header">
-                  <h4 class="shop_title" >锄禾日当午，汗滴禾下土</h4>
+                  <h4 class="shop_title" >{{shop.name}}</h4>
                   <ul class="shop_detail_ul">
-                    <li class="supports">保</li>
-                    <li class="supports">准</li>
-                    <li class="supports">票</li>
+                    <li class="supports" v-for="(shop,index) in shop.supports">{{shop.icon_name}}</li>
                   </ul>
                 </section>
                 <section class="shop_rating_order">
@@ -139,157 +54,22 @@
                       <span class="star-item off"></span>
                     </div>
                     <div class="rating_section">
-                      3.6
+                      {{shop.rating}}
                     </div>
                     <div class="order_section">
-                      月售106单
+                      月售{{shop.recent_order_num}}单
                     </div>
                   </section>
                   <section class="shop_rating_order_right">
-                    <span class="delivery_style delivery_left">硅谷专送</span>
+                    <span class="delivery_style delivery_left">{{shop.delivery_mode.text}}</span>
                     <span class="delivery_style delivery_right">准时达</span>
                   </section>
                 </section>
                 <section class="shop_distance">
                   <p class="shop_delivery_msg">
-                    <span>¥20起送</span>
+                    <span>¥{{shop.float_minimum_order_amount}}起送</span>
                     <span class="segmentation">/</span>
-                    <span>配送费约¥5</span>
-                  </p>
-                </section>
-              </div>
-            </a>
-          </li>
-          <li class="shop_li border-1px">
-            <a>
-              <div class="shop_left">
-                <img class="shop_img" src="../../assets/images/shop/2.jpg">
-              </div>
-              <div class="shop_right">
-                <section class="shop_detail_header">
-                  <h4 class="shop_title ellipsis" >锄禾日当午，汗滴禾下土</h4>
-                  <ul class="shop_detail_ul">
-                    <li class="supports">保</li>
-                    <li class="supports">准</li>
-                    <li class="supports">票</li>
-                  </ul>
-                </section>
-                <section class="shop_rating_order">
-                  <section class="shop_rating_order_left">
-                    <div class="star star-24">
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item off"></span>
-                    </div>
-                    <div class="rating_section">
-                      4.1
-                    </div>
-                    <div class="order_section">
-                      月售106单
-                    </div>
-                  </section>
-                  <section class="shop_rating_order_right">
-                    <span class="delivery_style delivery_left">硅谷专送</span>
-                    <span class="delivery_style delivery_right">准时达</span>
-                  </section>
-                </section>
-                <section class="shop_distance">
-                  <p class="shop_delivery_msg">
-                    <span>¥20起送</span>
-                    <span class="segmentation">/</span>
-                    <span>配送费约¥5</span>
-                  </p>
-                </section>
-              </div>
-            </a>
-          </li>
-          <li class="shop_li border-1px">
-            <a>
-              <div class="shop_left">
-                <img class="shop_img" src="../../assets/images/shop/3.jpg">
-              </div>
-              <div class="shop_right">
-                <section class="shop_detail_header">
-                  <h4 class="shop_title ellipsis" >锄禾日当午，汗滴禾下土</h4>
-                  <ul class="shop_detail_ul">
-                    <li class="supports">保</li>
-                    <li class="supports">准</li>
-                    <li class="supports">票</li>
-                  </ul>
-                </section>
-                <section class="shop_rating_order">
-                  <section class="shop_rating_order_left">
-                    <div class="star star-24">
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item off"></span>
-                      <span class="star-item off"></span>
-                    </div>
-                    <div class="rating_section">
-                      3.2
-                    </div>
-                    <div class="order_section">
-                      月售106单
-                    </div>
-                  </section>
-                  <section class="shop_rating_order_right">
-                    <span class="delivery_style delivery_left">硅谷专送</span>
-                    <span class="delivery_style delivery_right">准时达</span>
-                  </section>
-                </section>
-                <section class="shop_distance">
-                  <p class="shop_delivery_msg">
-                    <span>¥20起送</span>
-                    <span class="segmentation">/</span>
-                    <span>配送费约¥5</span>
-                  </p>
-                </section>
-              </div>
-            </a>
-          </li>
-          <li class="shop_li border-1px">
-            <a>
-              <div class="shop_left">
-                <img class="shop_img" src="../../assets/images/shop/4.jpg">
-              </div>
-              <div class="shop_right">
-                <section class="shop_detail_header">
-                  <h4 class="shop_title ellipsis" >锄禾日当午，汗滴禾下土</h4>
-                  <ul class="shop_detail_ul">
-                    <li class="supports">保</li>
-                    <li class="supports">准</li>
-                    <li class="supports">票</li>
-                  </ul>
-                </section>
-                <section class="shop_rating_order">
-                  <section class="shop_rating_order_left">
-                    <div class="star star-24">
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item on"></span>
-                      <span class="star-item half"></span>
-                      <span class="star-item off"></span>
-                    </div>
-                    <div class="rating_section">
-                      3.6
-                    </div>
-                    <div class="order_section">
-                      月售106单
-                    </div>
-                  </section>
-                  <section class="shop_rating_order_right">
-                    <span class="delivery_style delivery_left">硅谷专送</span>
-                    <span class="delivery_style delivery_right">准时达</span>
-                  </section>
-                </section>
-                <section class="shop_distance">
-                  <p class="shop_delivery_msg">
-                    <span>¥20起送</span>
-                    <span class="segmentation">/</span>
-                    <span>配送费约¥5</span>
+                    <span>配送费约¥{{shop.float_delivery_fee}}</span>
                   </p>
                 </section>
               </div>
@@ -311,47 +91,51 @@
     computed: {
       ...mapState(['address','categorys','shops']),
       categorysArr () {
+        //再开始时刻将小数组添加进大数组，后面直接更新小数组，大数组内的数据同步更新，
+        //在小数组达到临界时，重新创建新的小数组，新的小数组为空，会将其自动添加进大数组
         const { categorys } = this
-        // 二维数组
+        // 定义数组
         const bigArr = []
         let smallArr = []
-
-        // 遍历总的一维数组
-        categorys.forEach(c => {
+        // 遍历外围大数组
+        categorys.forEach(category => {
           // 将小数组放入大数组中(只保存一次)
           if (smallArr.length===0) {
             bigArr.push(smallArr)
           }
-
           // 将c保存小数组
-          smallArr.push(c)
-
+          smallArr.push(category)
           // 小数组的长度最大是8  ==> 如果小数组满, 创建一个新的小数组
           if (smallArr.length===8) {
             smallArr = []
           }
         })
-
         // 返回二维数组
         return bigArr
       },
-      // 使用lodash库实现
-      categorysArr2 () {
-        // return _.chunk(this.categorys, 8)
-        return chunk(this.categorys, 8)
-      }
     },
-    mounted () {
-      this.$store.dispatch('getCategorys')
+    async mounted () {
       this.$store.dispatch('getShops')
-      
-      new Swiper('.swiper-container', {
+      this.$store.dispatch('getCategorys')
+      new Swiper(this.$refs.categ, {
         pagination: {
           el: '.swiper-pagination',
         },
         loop: true
       })
     },
+    // watch:{
+    //   categorys () {
+    //     this.$nextTick (()=>{
+    //       new Swiper(this.$refs.categ, {
+    //         pagination: {
+    //           el: '.swiper-pagination',
+    //         },
+    //         loop: true
+    //       })
+    //     })
+    //   }
+    // }
   }
 </script>
 

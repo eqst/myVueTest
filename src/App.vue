@@ -9,23 +9,19 @@
 <script>
 import FooterGuide from "./components/footerGuide";
 import Header from './components/header/header'
+import {reqAdress} from './api'
 export default {
   components: {
   FooterGuide,
   Header
   },
-  mounted() {
+  async mounted() {
     this.$store.dispatch('getAddress')
+    // console.log(result);
   },
 }
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-  // $bgColor red
-  // #app1
-  //   overflow hidden
-  //   width 100%
-  //   height 100%
-  //   background-color bgColor
-  //   font-size 20px
+ 
 </style>
