@@ -12,9 +12,9 @@
         <form>
           <div :class="{on : isShowSms}">
             <section class="login_message">
-              <input v-model="phone" name="phone" placeholder="手机号"  value="text">
+              <input v-model="phone" maxlength="11" name="phone" placeholder="手机号"  value="text">
               <span></span>
-              <button disabled="disabled" class="get_verification">获取验证码</button>
+              <button disabled="!rightPhone" class="get_verification" :class="{rightPhone: rightPhone}" @click.prevent="clickGetCode()">获取验证码</button>
             </section>
             <section class="login_verification">
               <input type="tel" maxlength="8" placeholder="验证码">
@@ -30,10 +30,10 @@
                 <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
               </section>
               <section class="login_verification">
-                <input type="tel" maxlength="8" placeholder="密码">
-                <div class="switch_button off">
-                  <div class="switch_circle"></div>
-                  <span class="switch_text">...</span>
+                <input :type="isShowPSW ? 'text' : 'password'" maxlength="8" placeholder="密码">
+                <div class="switch_button" :class="isShowPSW ? 'on' : 'off'" @click="isShowPSW = !isShowPSW">
+                  <div class="switch_circle" :class="{right: isShowPSW}"></div>
+                  <span class="switch_text">{{isShowPSW ? 'abc' : ''}}</span>
                 </div>
               </section>
               <section class="login_message">
@@ -62,10 +62,18 @@
     data(){
       return {
         phone:'',
-        value:'',
-        isShowPaswd:false,
-        isShowSms:true
+        code:'',
+        isShowSms:true,
+        isShowPSW:false, 
       }
+    },
+    computed:{
+      isPhone () {
+        return /^1\d{10}$/.test(this.phone)
+      }
+    },
+    methods:{
+      
     }
   }
 </script>
@@ -143,7 +151,7 @@
                   border-radius 8px
                   transition background-color .3s,border-color .3s
                   padding 0 6px
-                  width 30px
+                  width 34px
                   height 16px
                   line-height 16px
                   color #fff
@@ -162,14 +170,16 @@
                     //transform translateX(27px)
                     position absolute
                     top -1px
-                    left -1px
-                    width 16px
+                    left -5px
+                    width 18px
                     height 16px
                     border 1px solid #ddd
                     border-radius 50%
                     background #fff
                     box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
                     transition transform .3s
+                    &.right
+                      transform translateX(25px)
               .login_hint
                 margin-top 12px
                 color #999
