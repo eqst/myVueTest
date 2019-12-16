@@ -41,7 +41,7 @@
                 <img class="get_verification" src="../../assets/images/captcha.svg" alt="captcha">
               </section>
             </section>
-          </div>
+          </div>                                                                                                                                                       
           <button class="login_submit">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
@@ -63,6 +63,8 @@
       return {
         phone:'',
         code:'',
+        pasword:'',
+        pictureImg:'',
         isShowSms:true,
         isShowPSW:false, 
       }
@@ -73,7 +75,15 @@
       }
     },
     methods:{
-      
+      isLogin(){
+        let numbers
+        if (this.isShowPSW) {
+          numbers = ['phone','pasword','pictureImg']
+        }else if (this.isShowSms) {
+          numbers = ['phone','code']
+        }
+
+      }
     }
   }
 </script>

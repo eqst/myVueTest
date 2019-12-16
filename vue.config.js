@@ -8,6 +8,7 @@ const postcss = px2rem({
 // vue.config.js
 module.exports = {
   lintOnSave:false,
+
   css: { // 添加postcss配置
     loaderOptions: {
       postcss: {
@@ -17,16 +18,18 @@ module.exports = {
       }
     }
 },
-configureWebpack:{
-  resolve: {
-    extensions: ['.js', '.vue', '.json'], // 可以省略的后缀名
-    alias: { // 路径别名(简写方式)
-      // 'vue$': 'vue/dist/vue.esm.js',  // 表示精准匹配   带vue编译器
-      '@': path.resolve(__dirname, 'src'),
-      '@components': path.resolve(__dirname, 'src/components'),
+
+  configureWebpack:{
+    resolve: {
+      extensions: ['.js', '.vue', '.json'], // 可以省略的后缀名
+      alias: { // 路径别名(简写方式)
+        // 'vue$': 'vue/dist/vue.esm.js',  // 表示精准匹配   带vue编译器
+        '@': path.resolve(__dirname, 'src'),
+        '@components': path.resolve(__dirname, 'src/components'),
+      }
     }
-  }
-},
+  },
+
   // 选项...
   devServer: {
     port: 8081,
@@ -44,5 +47,13 @@ configureWebpack:{
     },
     historyApiFallback: true, // 任意的 404 响应都被替代为 index.html
   },
-  
+
+  pluginOptions: {
+    i18n: {
+      locale: 'zh_CN',
+      fallbackLocale: 'en',
+      localeDir: 'locales',
+      enableInSFC: false
+    }
+  }
 }

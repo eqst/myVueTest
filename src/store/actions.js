@@ -27,7 +27,7 @@ export default {
   async getCategorys ({commit},callback){
     //从状态中商品分类列表
     const result = await reqCategorys()
-    // console.log(result);
+    console.log(result);
     if (result.code === 0) {
       const categorys = result.data
       commit(REQ_CATEGORYS,categorys)

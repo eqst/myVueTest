@@ -19,6 +19,7 @@ instance.interceptors.request.use((config)=>{
 instance.interceptors.response.use(
   response => {
     Indicator.close()
+    console.log(response.data);
     return response.data
   },
   error => {
