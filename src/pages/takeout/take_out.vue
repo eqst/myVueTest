@@ -42,7 +42,7 @@
                 <section class="shop_detail_header">
                   <h4 class="shop_title" >{{shop.name}}</h4>
                   <ul class="shop_detail_ul">
-                    <li class="supports" v-for="(shop,index) in shop.supports">{{shop.icon_name}}</li>
+                    <li class="supports" v-for="(shop) in shop.supports">{{shop.icon_name}}</li>
                   </ul>
                 </section>
                 <section class="shop_rating_order">
@@ -92,12 +92,11 @@
       <img src ="./../../assets/images/shop_back.svg"/>
     </div>
   </div>
-  </div>
 </template>
 
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
-  import chunk from 'lodash/chunk'
+  // import chunk from 'lodash/chunk'
   import Swiper from 'swiper'
   import 'swiper/css/swiper.min.css'
   export default {

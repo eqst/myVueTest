@@ -54,9 +54,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Vue from "vue"
-  import VeeValidate from 'vee-validate'
-  import zh_CN from 'vee-validate/dist/locale/zh_CN'
+  // import Vue from "vue"
+  // import VeeValidate from 'vee-validate'
+  // import zh_CN from 'vee-validate/dist/locale/zh_CN'
   
   export default {
     data(){
@@ -75,15 +75,15 @@
       }
     },
     methods:{
-      isLogin(){
-        let numbers
-        if (this.isShowPSW) {
-          numbers = ['phone','pasword','pictureImg']
-        }else if (this.isShowSms) {
-          numbers = ['phone','code']
-        }
+      // isLogin(){
+      //   let numbers
+      //   if (this.isShowPSW) {
+      //     numbers = ['phone','pasword','pictureImg']
+      //   }else if (this.isShowSms) {
+      //     numbers = ['phone','code']
+      //   }
 
-      }
+      // }
     }
   }
 </script>
