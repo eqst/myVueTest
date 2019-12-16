@@ -12,12 +12,16 @@
         <form>
           <div :class="{on : isShowSms}">
             <section class="login_message">
-              <input v-model="phone" maxlength="11" name="phone" placeholder="手机号"  value="text">
+              <input v-model="phone" maxlength="11" name="phone" v-validate="'required|mobile'" placeholder="手机号"  value="text">
               <span></span>
-              <button disabled="!rightPhone" class="get_verification" :class="{rightPhone: rightPhone}" @click.prevent="clickGetCode()">获取验证码</button>
+              <button :disabled="!isPhone || computer>0" class="get_verification" 
+                :class="{right_phone_number: isPhone}" @click.prevent="clickGetCode()"
+                >{{computer>0 ? `短信已发送(${computer}s)` : '发送验证码'}}</button>
+              <span style="color: red;" v-show="errors.has('phone')">{{ errors.first('phone') }}</span>
             </section>
             <section class="login_verification">
-              <input type="tel" maxlength="8" placeholder="验证码">
+              <input type="text" maxlength="6" v-model="code" name="code" v-validate="{required:true,regex:/^\d{6}$/}"  placeholder="验证码">
+              <span style="color:red;" v-show="errors.has('code')">{{errors.first('code')}}</span>
             </section>
             <section class="login_hint">
               温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
@@ -27,22 +31,30 @@
           <div :class="{on: !isShowSms}">
             <section>
               <section class="login_message">
-                <input type="tel" maxlength="11" placeholder="手机/邮箱/用户名">
+                <input type="tel" name="name" v-model="name" 
+                  v-validate="'required'" 
+                  maxlength="11" placeholder="手机/邮箱/用户名">
+                <span style="color:red" v-show="errors.has('name')">{{errors.first('name')}}</span>
               </section>
               <section class="login_verification">
-                <input :type="isShowPSW ? 'text' : 'password'" maxlength="8" placeholder="密码">
+                <input :type="isShowPSW ? 'text' : 'password'" maxlength="8" placeholder="密码"
+                  v-model="pasword" name="pasword" v-validate="'required'"
+                >
                 <div class="switch_button" :class="isShowPSW ? 'on' : 'off'" @click="isShowPSW = !isShowPSW">
                   <div class="switch_circle" :class="{right: isShowPSW}"></div>
                   <span class="switch_text">{{isShowPSW ? 'abc' : ''}}</span>
                 </div>
+                <span style="color:red" v-show="errors.has('pasword')">{{errors.first('pasword')}}</span>
               </section>
               <section class="login_message">
                 <input type="text" maxlength="11" placeholder="验证码">
-                <img class="get_verification" src="../../assets/images/captcha.svg" alt="captcha">
+                <img class="get_verification" @click="updateCaptcha" ref="captcha"  
+                src="http://localhost:4000/captcha" alt="captcha">
+                <span style="color:red" v-show="errors.has('captcha')">{{errors.first('captcha')}}</span>
               </section>
             </section>
           </div>                                                                                                                                                       
-          <button class="login_submit">登录</button>
+          <button class="login_submit" @click.prevent="isLogin">登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
@@ -57,16 +69,19 @@
   // import Vue from "vue"
   // import VeeValidate from 'vee-validate'
   // import zh_CN from 'vee-validate/dist/locale/zh_CN'
-  
+  import {Toast , MessageBox} from 'mint-ui'
   export default {
     data(){
       return {
+        name:'',
         phone:'',
         code:'',
         pasword:'',
         pictureImg:'',
         isShowSms:true,
         isShowPSW:false, 
+        captcha:'',
+        computer:0
       }
     },
     computed:{
@@ -75,15 +90,49 @@
       }
     },
     methods:{
-      // isLogin(){
-      //   let numbers
-      //   if (this.isShowPSW) {
-      //     numbers = ['phone','pasword','pictureImg']
-      //   }else if (this.isShowSms) {
-      //     numbers = ['phone','code']
-      //   }
-
-      // }
+      async clickGetCode(){
+        this.computer = 30
+        const intervalId = setInterval(() => {
+          this.computer --
+          if (this.computer <= 0) {
+            this.computer = 0
+            clearInterval(intervalId)
+          }
+        }, 1000);
+        const result = await this.$API.reqCode(this.phone)
+        if (result.code === 0) {
+          Toast('验证码已发送')
+        }else {
+          this.computer = 0
+          MessageBox('提示',result.msg || "发送失败")
+        }
+      },
+      async isLogin(){
+        let numbers
+        if (this.isShowPSW) {
+          numbers = ['name','pasword','pictureImg']
+        }else if (this.isShowSms) {
+          numbers = ['phone','code']
+        }
+        const success = await this.$validator.validateAll(numbers)
+        let result
+        if (success) {
+          const {isShowPSW,phone,code,pasword,captcha} = this
+          if (isShowPSW) {
+            result = await this.$API.reqPSWLogin({name,pasword,cap})
+            this.updateCaptcha()
+            this.captcha = ''
+          }else {
+            result = await this.$API.reqSmsLogin({phone,code})
+          }
+          if (result.code === 0) {
+            const user = result.data
+          }
+        }
+      },
+      updateCaptcha () {
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
+      }
     }
   }
 </script>
@@ -149,6 +198,8 @@
                   color #ccc
                   font-size 14px
                   background transparent
+                  &.right_phone_number
+                    color black
               .login_verification
                 position relative
                 margin-top 16px

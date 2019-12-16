@@ -96,7 +96,6 @@
 
 <script type="text/ecmascript-6">
   import {mapState} from 'vuex'
-  // import chunk from 'lodash/chunk'
   import Swiper from 'swiper'
   import 'swiper/css/swiper.min.css'
   export default {

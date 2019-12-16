@@ -9,3 +9,13 @@ export const reqCategorys = () => ajax('/index_category')
 
 //请求商铺信息
 export const reqShops = ({longitude, latitude}) => ajax('/shops',{params:{longitude, latitude}})
+
+//情求验证码
+export const reqCode = (phone) => ajax.get('/clickGetCode',{
+  params:{
+    phone
+  }
+})
+
+//用户名密码登录
+export const reqPSWLogin = ({phone,code}) => ajax.post('/login_sms',{phone,code})
