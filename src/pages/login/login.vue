@@ -100,36 +100,37 @@
           }
         }, 1000);
         const result = await this.$API.reqCode(this.phone)
-        if (result.code === 0) {
-          Toast('验证码已发送')
-        }else {
-          this.computer = 0
-          MessageBox('提示',result.msg || "发送失败")
+        if (result.code===0) {
+          Toast('验证码短信已发送');
+        } else {
+          // 停止倒计时
+          this.computeTime = 0
+          MessageBox('提示', result.msg || '发送失败');
         }
       },
-      async isLogin(){
-        let numbers
-        if (this.isShowPSW) {
-          numbers = ['name','pasword','pictureImg']
-        }else if (this.isShowSms) {
-          numbers = ['phone','code']
-        }
-        const success = await this.$validator.validateAll(numbers)
-        let result
-        if (success) {
-          const {isShowPSW,phone,code,pasword,captcha} = this
-          if (isShowPSW) {
-            result = await this.$API.reqPSWLogin({name,pasword,cap})
-            this.updateCaptcha()
-            this.captcha = ''
-          }else {
-            result = await this.$API.reqSmsLogin({phone,code})
-          }
-          if (result.code === 0) {
-            const user = result.data
-          }
-        }
-      },
+      // async isLogin(){
+      //   let numbers
+      //   if (this.isShowPSW) {
+      //     numbers = ['name','pasword','pictureImg']
+      //   }else if (this.isShowSms) {
+      //     numbers = ['phone','code']
+      //   }
+      //   const success = await this.$validator.validateAll(numbers)
+      //   let result
+      //   if (success) {
+      //     const {isShowPSW,phone,code,pasword,captcha} = this
+      //     if (isShowPSW) {
+      //       result = await this.$API.reqPSWLogin({name,pasword,cap})
+      //       this.updateCaptcha()
+      //       this.captcha = ''
+      //     }else {
+      //       result = await this.$API.reqSmsLogin({phone,code})
+      //     }
+      //     if (result.code === 0) {
+      //       const user = result.data
+      //     }
+      //   }
+      // },
       updateCaptcha () {
         this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
       }

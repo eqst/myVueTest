@@ -11,7 +11,7 @@ export const reqCategorys = () => ajax('/index_category')
 export const reqShops = ({longitude, latitude}) => ajax('/shops',{params:{longitude, latitude}})
 
 //情求验证码
-export const reqCode = (phone) => ajax.get('/clickGetCode',{
+export const reqCode = (phone) => ajax.get('/sendcode',{
   params:{
     phone
   }

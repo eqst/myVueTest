@@ -33,25 +33,25 @@ instance.interceptors.response.use(
     return response.data
   },
   error => { 
-    if (!response) {
-      const path = router.currentRoute.path
-      if (path !== '/login') {
-        router.replace('/login')
-        Toast(error.message)
-      }
-    }else {
-      if (error.response.status === 401) {
-        const path = router.currentRoute.path
-        if (path!== '/login') {
-          router.replace('/login')
-          Toast(error.response.data.message || "登陆失败,请重新登陆")
-        }
-      }else if (error.response.status === 404) {
-        MessageBox('提示','访问资源不存在')
-      }else{
-        MessageBox('提示','情求出错:'+error.message)
-      }
-    }
+    // if (!response) {
+    //   const path = router.currentRoute.path
+    //   if (path !== '/login') {
+    //     router.replace('/login')
+    //     Toast(error.message)
+    //   }
+    // }else {
+    //   if (error.response.status === 401) {
+    //     const path = router.currentRoute.path
+    //     if (path!== '/login') {
+    //       router.replace('/login')
+    //       Toast(error.response.data.message || "登陆失败,请重新登陆")
+    //     }
+    //   }else if (error.response.status === 404) {
+    //     MessageBox('提示','访问资源不存在')
+    //   }else{
+    //     MessageBox('提示','情求出错:'+error.message)
+    //   }
+    // }
     return new Promise(() => {})
   }
 )
