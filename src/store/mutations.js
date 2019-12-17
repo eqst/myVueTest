@@ -5,7 +5,10 @@ import {
   REQ_SAVETOKEN,
   REQ_SAVEUSER,
   RESET_TOKEN,
-  RESET_USER
+  RESET_USER,
+  REQ_SHOPINFO,
+  REQ_SHOPRATING,
+  REQ_SHOPGOODS
 } from './mutation_type'
 
 export default {
@@ -30,4 +33,13 @@ export default {
   [RESET_USER] (state) {
     state.user = {}
   },
+  [REQ_SHOPINFO](state,{info}){
+    state.info = info
+  },
+  [REQ_SHOPRATING](state,{rating}){
+    state.rating = rating
+  },
+  [REQ_SHOPGOODS](state,{goods}){
+    state.goods = goods
+  }
 }

@@ -4,7 +4,10 @@ import {
   reqAdress,
   reqCategorys,
   reqShops,
-  reqAutoLogin
+  reqAutoLogin,
+  reqShopInfo,
+  reqShopGoods,
+  reqShopRating
 } from '../api'
 
 import {
@@ -14,7 +17,10 @@ import {
   REQ_SAVEUSER,
   REQ_SAVETOKEN,
   RESET_USER,
-  RESET_TOKEN
+  RESET_TOKEN,
+  REQ_SHOPINFO,
+  REQ_SHOPRATING,
+  REQ_SHOPGOODS
 } from './mutation_type'
 
 export default {
@@ -42,11 +48,10 @@ export default {
     //从状态中获取经纬度
     const {longitude, latitude} =state
     const result = await reqShops(longitude, latitude)
-    // console.log(result);
     if (result.code === 0) {
       const shops = result.data
       commit(REQ_SHOPS,shops)
-      // typeof callback === "function" && callback()
+      typeof callback === "function" && callback()
     }
   },
 
@@ -73,5 +78,34 @@ export default {
     localStorage.removeItem('token_key')
     commit(RESET_USER)
     commit(RESET_TOKEN)
+  },
+
+  async getShopInfo ({commit},callback){
+    const result = await reqShopInfo()
+    // console.log(result);
+    if (result.code === 0) {
+      const info = result.data
+      commit(REQ_SHOPINFO,{info})
+      typeof callback === "function" && callback()
+    }
+  },
+
+  async getShopRating ({commit},callback){
+    const result = await reqShopRating()
+    // console.log(result);
+    if (result.code === 0) {
+      const rating = result.data
+      commit(REQ_SHOPRATING,{rating})
+      typeof callback === "function" && callback()
+    }
+  },
+
+  async getShops ({commit},callback){
+    const result = await reqShopGoods()
+    if (result.code === 0) {
+      const goods = result.data
+      commit(REQ_SHOPGOODS,{goods})
+      typeof callback === "function" && callback()
+    }
   },
 }
