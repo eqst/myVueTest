@@ -6,8 +6,12 @@ import Mine from '../pages/mine/mine'
 import Search from '../pages/search/search'
 import Indent from '../pages/indent/indent.vue'
 import Login from '../pages/login/login.vue'
-import Userinfo from '../pages/userInfo/userInfo.vue'
-import ShopInfo from '../pages/shopInfo/shopinfo.vue'
+import UserInfo from "../pages/userInfo_my/userinfo.vue";
+import Shop from "../pages/shop/Shop.vue";
+import Goods from '../pages/shop/Goods.vue'
+import Ratings from '../pages/shop/Ratings.vue'
+import Info from '../pages/shop/Info.vue'
+
 
 Vue.use(VueRouter)
 export default new VueRouter({
@@ -42,16 +46,35 @@ export default new VueRouter({
       }
     },
     {
+      path : '/shop',
+      component:Shop,
+      children: [
+        {
+          path: '/shop/goods',
+          component: Goods
+        },
+        {
+          path: 'ratings',
+          component: Ratings
+        },
+        {
+          path: '/shop/info',
+          component: Info
+        },
+        
+        {
+          path: '',
+          redirect: '/shop/goods'
+        }
+      ]
+    },
+    {
       path:'/login',
       component:Login
     },
     {
       path:'/userinfo',
-      component:Userinfo
-    },
-    {
-      path:'/shopinfo',
-      component:ShopInfo
+      component:UserInfo
     },
     {
       path:'/',

@@ -5,3 +5,6 @@ export const REQ_SAVEUSER = "req_saveuser"
 export const REQ_SAVETOKEN = "req_savetoken"
 export const RESET_USER = "reset_user"
 export const RESET_TOKEN = "reset_token"
+export const RECEIVE_GOODS = 'receive_goods' // 接收商品数组
+export const RECEIVE_RATINGS = 'receive_ratings' // 接收商家评价数组
+export const RECEIVE_INFO = 'receive_info' // 接收商家信息
