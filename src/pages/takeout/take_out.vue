@@ -26,7 +26,7 @@
       </div>
       <img src ="./../../assets/images/msite_back.svg" v-else/>
     </nav>
-    <div class="msite_shop_list border-1px" v-if="shops.length">
+    <div class="msite_shop_list border-1px" v-if="shops.length" @click="$router.push('/shopinfo')">
       <div class="shop_header">
         <i class="iconfont icon-xuanxiang"></i>
         <span class="shop_header_title">附近商家</span>

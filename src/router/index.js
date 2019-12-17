@@ -6,6 +6,8 @@ import Mine from '../pages/mine/mine'
 import Search from '../pages/search/search'
 import Indent from '../pages/indent/indent.vue'
 import Login from '../pages/login/login.vue'
+import Userinfo from '../pages/userInfo/userInfo.vue'
+import ShopInfo from '../pages/shopInfo/shopinfo.vue'
 
 Vue.use(VueRouter)
 export default new VueRouter({
@@ -42,6 +44,14 @@ export default new VueRouter({
     {
       path:'/login',
       component:Login
+    },
+    {
+      path:'/userinfo',
+      component:Userinfo
+    },
+    {
+      path:'/shopinfo',
+      component:ShopInfo
     },
     {
       path:'/',

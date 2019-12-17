@@ -3,13 +3,18 @@
 import {
   reqAdress,
   reqCategorys,
-  reqShops
+  reqShops,
+  reqAutoLogin
 } from '../api'
 
 import {
   REQ_ADDRESS,
   REQ_CATEGORYS,
-  REQ_SHOPS
+  REQ_SHOPS,
+  REQ_SAVEUSER,
+  REQ_SAVETOKEN,
+  RESET_USER,
+  RESET_TOKEN
 } from './mutation_type'
 
 export default {
@@ -43,5 +48,30 @@ export default {
       commit(REQ_SHOPS,shops)
       // typeof callback === "function" && callback()
     }
-  }
+  },
+
+  saveUser ({commit},user){
+    console.log(user);
+    const token = user.token
+    localStorage.setItem('token_key',token)
+    delete user.token
+    commit(REQ_SAVEUSER,{user})
+    commit(REQ_SAVETOKEN,{token})
+  },
+
+  async autoLogin ({commit,state}) {
+    if (state.token && !state.user._id) {
+      const result = await reqAutoLogin()
+      if (result.code === 0) {
+        const user = result.data
+        commit(REQ_SAVEUSER,{user})
+      }
+    }
+  },
+
+  logout ({commit}) {
+    localStorage.removeItem('token_key')
+    commit(RESET_USER)
+    commit(RESET_TOKEN)
+  },
 }

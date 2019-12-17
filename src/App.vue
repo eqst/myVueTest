@@ -18,6 +18,7 @@ export default {
   async mounted() {
     this.$store.dispatch('getAddress')
     // console.log(result);
+    this.$store.dispatch('autoLogin')
   },
 }
 </script>

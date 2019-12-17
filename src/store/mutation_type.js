@@ -1,3 +1,7 @@
 export const REQ_ADDRESS = "req_address"
 export const REQ_CATEGORYS = "req_categorys"
 export const REQ_SHOPS = "req_shops"
+export const REQ_SAVEUSER = "req_saveuser"
+export const REQ_SAVETOKEN = "req_savetoken"
+export const RESET_USER = "reset_user"
+export const RESET_TOKEN = "reset_token"

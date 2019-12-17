@@ -31,34 +31,36 @@
           <div :class="{on: !isShowSms}">
             <section>
               <section class="login_message">
-                <input type="tel" name="name" v-model="name" 
+                <input type="text" name="name" v-model="name" 
                   v-validate="'required'" 
                   maxlength="11" placeholder="手机/邮箱/用户名">
                 <span style="color:red" v-show="errors.has('name')">{{errors.first('name')}}</span>
               </section>
               <section class="login_verification">
                 <input :type="isShowPSW ? 'text' : 'password'" maxlength="8" placeholder="密码"
-                  v-model="pasword" name="pasword" v-validate="'required'"
+                  v-model="password" name="password" v-validate="'required'" 
                 >
                 <div class="switch_button" :class="isShowPSW ? 'on' : 'off'" @click="isShowPSW = !isShowPSW">
                   <div class="switch_circle" :class="{right: isShowPSW}"></div>
                   <span class="switch_text">{{isShowPSW ? 'abc' : ''}}</span>
                 </div>
-                <span style="color:red" v-show="errors.has('pasword')">{{errors.first('pasword')}}</span>
+                <span style="color:red" v-show="errors.has('password')">{{errors.first('password')}}</span>
               </section>
               <section class="login_message">
-                <input type="text" maxlength="11" placeholder="验证码">
+                <input type="text" maxlength="4" placeholder="验证码" v-model="captcha"
+                  v-validate="{required: true,regex: /^[0-9a-zA-Z]{4}$/}"
+                >
                 <img class="get_verification" @click="updateCaptcha" ref="captcha"  
-                src="http://localhost:4000/captcha" alt="captcha">
+                src="/api/captcha" alt="captcha">
                 <span style="color:red" v-show="errors.has('captcha')">{{errors.first('captcha')}}</span>
               </section>
             </section>
           </div>                                                                                                                                                       
-          <button class="login_submit" @click.prevent="isLogin">登录</button>
+          <button class="login_submit" @click.prevent="isLogin" >登录</button>
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
-      <a href="javascript:" class="go_back" @click="$router.back()">
+      <a href="javascript:" class="go_back" @click="$router.replace('/mine')">
         <i class="iconfont icon-jiantou2"></i>
       </a>
     </div>
@@ -76,8 +78,7 @@
         name:'',
         phone:'',
         code:'',
-        pasword:'',
-        pictureImg:'',
+        password:'',
         isShowSms:true,
         isShowPSW:false, 
         captcha:'',
@@ -108,31 +109,46 @@
           MessageBox('提示', result.msg || '发送失败');
         }
       },
-      // async isLogin(){
-      //   let numbers
-      //   if (this.isShowPSW) {
-      //     numbers = ['name','pasword','pictureImg']
-      //   }else if (this.isShowSms) {
-      //     numbers = ['phone','code']
-      //   }
-      //   const success = await this.$validator.validateAll(numbers)
-      //   let result
-      //   if (success) {
-      //     const {isShowPSW,phone,code,pasword,captcha} = this
-      //     if (isShowPSW) {
-      //       result = await this.$API.reqPSWLogin({name,pasword,cap})
-      //       this.updateCaptcha()
-      //       this.captcha = ''
-      //     }else {
-      //       result = await this.$API.reqSmsLogin({phone,code})
-      //     }
-      //     if (result.code === 0) {
-      //       const user = result.data
-      //     }
-      //   }
-      // },
+      async isLogin(){
+        let numbers
+        console.log(numbers);
+        if (this.isShowSms) {
+          numbers = ['phone','code']
+        }else {
+          numbers = ['name','password','captcha']
+        }
+        const success = await this.$validator.validateAll(numbers)
+
+        let result
+        if (success) {
+          const {isShowSms,phone,code,password,captcha,name} = this
+          if (isShowSms) {
+            result = await this.$API.reqSmsLogin({phone,code})
+            this.phone = ''
+            this.code = ''
+          }else {
+            result = await this.$API.reqPwdLogin({name,password,captcha})
+            console.log(result);
+            this.updateCaptcha()
+            this.captcha = ''
+            this.name = ''
+            this.password = ''
+          }
+          if (result.code===0) {
+            const user = result.data
+            console.log(user);
+            // 将user保存到vuex的state
+            this.$store.dispatch('saveUser', user) // 将user和token保存到state, 将token保存local
+
+            // 跳转到个人中心
+            this.$router.replace({path: '/mine'})
+          } else {
+            MessageBox('提示', result.msg)
+          }
+        }
+      },
       updateCaptcha () {
-        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
+        this.$refs.captcha.src = '/api/captcha?time=' + Date.now()
       }
     }
   }
