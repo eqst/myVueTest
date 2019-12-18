@@ -1,46 +1,45 @@
 <template>
-  <div class="goods">
-      <div class="menu-wrapper">
-      <ul>
-        <li class="menu-item current" v-for="(good,index) in goods" :key="good.name" 
-        :class="{current: index===currentIndex}"  @click="clickItem(index)"
-        >
-          <span class="text bottom-border-1px">
-            <img class="icon" :src="good.icon" v-if="good.icon">
-            {{good.name}}
-          </span>
-        </li>
-      </ul>
-    </div>
-    <div class="foods-wrapper">
-      <ul>
-        <li class="food-list-hook" v-for="(good,index) in goods" :key="good.name">
-          <h1 class="title">{{good.name}}</h1>
-          <ul>
-            <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="food.name">
-              <div class="icon">
-                <img width="57" height="57"
-                     :src="food.icon">
-              </div>
-              <div class="content">
-                <h2 class="name">{{food.name}}</h2>
-                <p class="desc">{{food.description}}</p>
-                <div class="extra">
-                  <span class="count">月售{{food.sellCount}}份</span>
-                  <span>好评率{{food.rating}}%</span></div>
-                <div class="price">
-                  <span class="now">￥{{food.price}}</span>
+  <div>
+    <div class="goods">
+      <div class="menu-wrapper" ref="left">
+        <ul>
+          <li class="menu-item" v-for="(good,index) in goods" :key="good.name" :class="{current: index===currentIndex}">
+            <span class="text bottom-border-1px">
+              <img class="icon" :src="good.icon" v-if="good.icon">
+              {{good.name}}
+              </span>
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper" ref="right">
+        <ul>
+          <li class="food-list-hook" v-for="(good,index) in goods" :key="good.name">
+            <h1 class="title">{{good.name}}</h1>
+            <ul>
+              <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="food.name">
+                <div class="icon">
+                  <img width="57" height="57"
+                      :src="food.icon">
                 </div>
-                <div class="cartcontrol-wrapper">
-                  CartControl组件
+                <div class="content">
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="desc">{{food.description}}</p>
+                  <div class="extra">
+                    <span class="count">月售{{food.sellCount}}份</span>
+                    <span>好评率{{food.rating}}%</span></div>
+                  <div class="price">
+                    <span class="now">￥{{food.price}}</span>
+                  </div>
+                  <div class="cartcontrol-wrapper">
+                    CartControl组件
+                  </div>
                 </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
     </div>
-
   </div>
 </template>
 
@@ -61,11 +60,21 @@ import {mapState} from 'vuex'
       currentIndex () {
         const {scrollY, tops} = this
         //定义变量接收保存index
-        const index = tops.findIndex((top,index) => scrollY >= top && scrollY<tops[index+1])
+        const index = (tops.findIndex((top,index) => scrollY >= top && scrollY<tops[index+1]))*1+1
         return index
       }
 
     },
+    watch:{
+      goods(){ //数据变化了
+        this.$nextTick( () => { //列表数据显示了
+          new BScroll(this.$refs.left , {})
+          new BScroll(this.$refs.right , {})
+
+        })
+      }
+
+    }
 
   }
 </script>
@@ -81,13 +90,13 @@ import {mapState} from 'vuex'
     background: #fff;
     overflow: hidden
     .menu-wrapper
-      flex: 0 0 auto
+      flex: 0 0 80px
       width: 80px
       background: #f3f5f7
       .menu-item
         display: table
         height: 54px
-        width: 56px
+        width: 100%
         padding: 0 12px
         line-height: 14px
         &.current
