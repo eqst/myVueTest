@@ -6,9 +6,9 @@ import {
   REQ_SAVEUSER,
   RESET_TOKEN,
   RESET_USER,
-  REQ_SHOPINFO,
-  REQ_SHOPRATING,
-  REQ_SHOPGOODS
+  RECEIVE_INFO,
+  RECEIVE_RATINGS,
+  RECEIVE_GOODS
 } from './mutation_type'
 
 export default {
@@ -33,13 +33,15 @@ export default {
   [RESET_USER] (state) {
     state.user = {}
   },
-  [REQ_SHOPINFO](state,{info}){
+  [RECEIVE_INFO](state, {info}) {
     state.info = info
   },
-  [REQ_SHOPRATING](state,{rating}){
-    state.rating = rating
+  
+  [RECEIVE_RATINGS](state, {ratings}) {
+    state.ratings = ratings
   },
-  [REQ_SHOPGOODS](state,{goods}){
+  
+  [RECEIVE_GOODS](state, {goods}) {
     state.goods = goods
-  }
+  },
 }

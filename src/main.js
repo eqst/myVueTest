@@ -7,6 +7,7 @@ import Header from './components/header/header.vue'
 import './vee';
 import i18n from './i18n'
 import * as API from './api'
+import './mock/mock-server'
 import Star from './components/star/star.vue'
 Vue.prototype.$API = API
 

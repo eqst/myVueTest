@@ -4,10 +4,10 @@ import {
   reqAdress,
   reqCategorys,
   reqShops,
+  reqInfo,
   reqAutoLogin,
-  reqShopInfo,
-  reqShopGoods,
-  reqShopRating
+  reqRatings,
+  reqGoods
 } from '../api'
 
 import {
@@ -18,9 +18,9 @@ import {
   REQ_SAVETOKEN,
   RESET_USER,
   RESET_TOKEN,
-  REQ_SHOPINFO,
-  REQ_SHOPRATING,
-  REQ_SHOPGOODS
+  RECEIVE_INFO,
+  RECEIVE_RATINGS,
+  RECEIVE_GOODS
 } from './mutation_type'
 
 export default {
@@ -48,10 +48,11 @@ export default {
     //从状态中获取经纬度
     const {longitude, latitude} =state
     const result = await reqShops(longitude, latitude)
+    // console.log(result);
     if (result.code === 0) {
       const shops = result.data
       commit(REQ_SHOPS,shops)
-      typeof callback === "function" && callback()
+      // typeof callback === "function" && callback()
     }
   },
 
@@ -79,33 +80,37 @@ export default {
     commit(RESET_USER)
     commit(RESET_TOKEN)
   },
-
-  async getShopInfo ({commit},callback){
-    const result = await reqShopInfo()
-    // console.log(result);
-    if (result.code === 0) {
+   // 异步获取商家信息
+   async getShopInfo({commit}, cb) {
+    const result = await reqInfo()
+    if(result.code===0) {
       const info = result.data
-      commit(REQ_SHOPINFO,{info})
-      typeof callback === "function" && callback()
+      commit(RECEIVE_INFO, {info})
+
+      typeof cb==='function' && cb()
     }
   },
 
-  async getShopRating ({commit},callback){
-    const result = await reqShopRating()
-    // console.log(result);
-    if (result.code === 0) {
-      const rating = result.data
-      commit(REQ_SHOPRATING,{rating})
-      typeof callback === "function" && callback()
+  // 异步获取商家评价列表
+  async getShopRatings({commit}, cb) {
+    const result = await reqRatings()
+    console.log(result);
+    if(result.code===0) {
+      const ratings = result.data
+      commit(RECEIVE_RATINGS, {ratings})
+
+      typeof cb==='function' && cb()
     }
   },
 
-  async getShops ({commit},callback){
-    const result = await reqShopGoods()
-    if (result.code === 0) {
+  // 异步获取商家商品列表
+  async getShopGoods({commit}, cb) {
+    const result = await reqGoods()
+    if(result.code===0) {
       const goods = result.data
-      commit(REQ_SHOPGOODS,{goods})
-      typeof callback === "function" && callback()
+      commit(RECEIVE_GOODS, {goods})
+      // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
+      typeof cb==='function' && cb()
     }
   },
 }

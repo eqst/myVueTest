@@ -17,20 +17,17 @@ export const reqCode = (phone) => ajax.get('/sendcode',{
   }
 })
 
-//用户名密码登陆
+// 5.用户名密码登陆
 export const reqPwdLogin = ({name, password, captcha}) => ajax.post('/login_pwd', {name, password, captcha})
 
-//手机号验证码登陆
+// 6. 手机号验证码登陆
 export const reqSmsLogin = ({phone, code}) => ajax.post('/login_sms', {phone, code})
 
-//自动登录
 export const reqAutoLogin = () => ajax.get('/auto_login')
 
-//请求商品详情
-export const reqShopInfo = () => ajax.get('/info')
-
-//请求商户菜单
-export const reqShopGoods = () => ajax.get('/goods')
-
-//请求商户的rating
-export const reqShopRating = () => ajax.get('/rating')
+// 获取goods
+export const reqGoods = () => ajax('/goods')
+// 获取ratings
+export const reqRatings = () => ajax('/ratings')
+// 获取info
+export const reqInfo = () => ajax('/info')
