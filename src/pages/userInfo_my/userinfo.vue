@@ -1,14 +1,14 @@
 <template>
   <div>
-    <ShopHeader/>
+    <!-- <ShopHeader/> -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import ShopHeader from '../../components/shopInfo/shopHeader'
+// import ShopHeader from '../../components/shopInfo/shopHeader'
   export default {
     components:{
-      ShopHeader
+      // ShopHeader
     }
   }
 </script>

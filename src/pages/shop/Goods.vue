@@ -2,24 +2,26 @@
   <div>
     <div class="goods">
       <div class="menu-wrapper" ref="left">
-        <ul>
-          <li class="menu-item" v-for="(good,index) in goods" :key="good.name" :class="{current: index===currentIndex}">
+        <ul ref="leftUl">
+          <!-- current -->
+          <li class="menu-item" v-for="(good, index) in goods" :key="good.name" 
+            :class="{current: index===currentIndex}" @click="clickItem(index)">
             <span class="text bottom-border-1px">
               <img class="icon" :src="good.icon" v-if="good.icon">
               {{good.name}}
-              </span>
+            </span>
           </li>
         </ul>
       </div>
       <div class="foods-wrapper" ref="right">
-        <ul>
-          <li class="food-list-hook" v-for="(good,index) in goods" :key="good.name">
+        <ul ref="rightUl">
+          <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
             <h1 class="title">{{good.name}}</h1>
             <ul>
-              <li class="food-item bottom-border-1px" v-for="(food,index) in good.foods" :key="food.name">
+              <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" 
+                :key="index" @click="showFood(food)">
                 <div class="icon">
-                  <img width="57" height="57"
-                      :src="food.icon">
+                  <img width="57" height="57" :src="food.icon">
                 </div>
                 <div class="content">
                   <h2 class="name">{{food.name}}</h2>
@@ -29,9 +31,10 @@
                     <span>好评率{{food.rating}}%</span></div>
                   <div class="price">
                     <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <!-- <CartControl :food="food"/> -->
                   </div>
                 </div>
               </li>
@@ -39,7 +42,10 @@
           </li>
         </ul>
       </div>
+      <!-- <ShopCart/> -->
     </div>
+    <!-- 组件标签对象就是组件对象 -->
+    <!-- <Food :food="food" ref="food"/> -->
   </div>
 </template>
 
@@ -59,22 +65,91 @@ import {mapState} from 'vuex'
       ...mapState(['goods']),
       currentIndex () {
         const {scrollY, tops} = this
-        //定义变量接收保存index
-        const index = (tops.findIndex((top,index) => scrollY >= top && scrollY<tops[index+1]))*1+1
+        const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
+        if (index!==this.index && this.leftScroll) {
+          // 将新的下标保存起来
+          this.index = index
+          // 让左侧列表滑动到当前分类处
+          const li = this.$refs.leftUl.children[index]
+          this.leftScroll.scrollToElement(li, 300)
+        }
         return index
       }
-
     },
-    watch:{
-      goods(){ //数据变化了
-        this.$nextTick( () => { //列表数据显示了
-          new BScroll(this.$refs.left , {})
-          new BScroll(this.$refs.right , {})
+     methods: {
+      // 初始化滑动
+      _initScroll () {
+        this.leftScroll = new BScroll(this.$refs.left, {
+          click: true, // 分发自定义的click事件
+        })
+        this.rightScroll = new BScroll(this.$refs.right, {
+          click: true,
+          probeType: 1, // 非实时 / 触摸
+          // probeType: 2, // 实时 / 触摸
+          // probeType: 3 // 实时 / 触摸 / 惯性 / 编码
+        })
 
+        // 给右侧列表绑定scroll监听
+        this.rightScroll.on('scroll', ({x, y}) => {
+          console.log('scroll', x, y)
+          this.scrollY = Math.abs(y)
+        })
+
+        // 给右侧列表绑定scrollEnd监听
+        this.rightScroll.on('scrollEnd', ({x, y}) => {
+          console.log('scrollEnd', x, y)
+          this.scrollY = Math.abs(y)
+        })
+      },
+      /* 
+      统计右侧所有分类li的top的数组
+      */
+      _initTops () {
+        const tops = []
+        let top = 0
+        tops.push(top)
+        const lis = Array.prototype.slice.call(this.$refs.rightUl.children)
+        lis.forEach(li => {
+          top += li.clientHeight
+          tops.push(top)
+        })
+
+        // 更新tops数据
+        this.tops = tops
+        console.log('tops', tops)
+      },
+
+      clickItem (index) {
+        // 得到对应的top
+        const top = this.tops[index]
+
+        // 立即更新scrollY为目标值(立即选中当前分类项)
+        this.scrollY = top
+
+        // 让右侧列表滑动到对应位置
+        this.rightScroll.scrollTo(0, -top, 300)
+      },
+
+      /* 
+      父组件调用子组件的方法: ref
+      子组件调用父组件的方法: props
+      */
+      showFood (food) {
+        // 更新数据
+        this.food = food
+        // 显示food组件界面
+        // this.$refs.food.toggleShow()
+      } 
+    },
+
+    watch: {
+      goods () { // goods数据有了
+        this.$nextTick(() => {// 列表数据显示了
+          this._initScroll()
+          this._initTops()
         })
       }
-
-    }
+    },
 
   }
 </script>
@@ -90,7 +165,7 @@ import {mapState} from 'vuex'
     background: #fff;
     overflow: hidden
     .menu-wrapper
-      flex: 0 0 80px
+      flex: 0 0 auto
       width: 80px
       background: #f3f5f7
       .menu-item
@@ -176,5 +251,4 @@ import {mapState} from 'vuex'
             position: absolute
             right: 0
             bottom: 12px
- 
 </style>
