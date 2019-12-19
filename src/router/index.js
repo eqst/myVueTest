@@ -6,7 +6,7 @@ import Mine from '../pages/mine/mine'
 import Search from '../pages/search/search'
 import Indent from '../pages/indent/indent.vue'
 import Login from '../pages/login/login.vue'
-import UserInfo from "../pages/userInfo_my/userInfo.vue";
+import UserInfo from "../pages/userInfo_my/userinfo.vue"
 import Shop from "../pages/shop/Shop.vue";
 import Goods from '../pages/shop/Goods.vue'
 import Ratings from '../pages/shop/Ratings.vue'

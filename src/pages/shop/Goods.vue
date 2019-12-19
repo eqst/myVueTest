@@ -34,7 +34,7 @@
                     <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    <!-- <CartControl :food="food"/> -->
+                    <CartControl :food="food"/>
                   </div>
                 </div>
               </li>
@@ -42,16 +42,16 @@
           </li>
         </ul>
       </div>
-      <!-- <ShopCart/> -->
     </div>
     <!-- 组件标签对象就是组件对象 -->
-    <!-- <Food :food="food" ref="food"/> -->
+    <Food :food="food" ref="food"/>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll'
 import {mapState} from 'vuex'
+import Food from '../../components/Food/Food'
 
   export default {
     data() {
@@ -61,8 +61,12 @@ import {mapState} from 'vuex'
         food:{} //需要显示的food
       }
     },
+    components:{
+      Food
+    },
     computed: {
       ...mapState(['goods']),
+
       currentIndex () {
         const {scrollY, tops} = this
         const index = tops.findIndex((top, index) => scrollY>=top && scrollY<tops[index+1])
@@ -79,6 +83,7 @@ import {mapState} from 'vuex'
      methods: {
       // 初始化滑动
       _initScroll () {
+        // 滑动的控制者--绑定监听滑动获取scrollY的值
         this.leftScroll = new BScroll(this.$refs.left, {
           click: true, // 分发自定义的click事件
         })
@@ -101,9 +106,11 @@ import {mapState} from 'vuex'
           this.scrollY = Math.abs(y)
         })
       },
-      /* 
-      统计右侧所有分类li的top的数组
-      */
+      // 更新右侧的li,找到li的数组,遍历
+      //this.$refs.rightUl-----ul
+      //this.$refs.rightUl.children----li(伪数组,变为真去遍历)
+      // Array.from(this.$refs.rightUl.children)----变为真数组
+      // ES5
       _initTops () {
         const tops = []
         let top = 0
@@ -116,7 +123,6 @@ import {mapState} from 'vuex'
 
         // 更新tops数据
         this.tops = tops
-        console.log('tops', tops)
       },
 
       clickItem (index) {
@@ -138,7 +144,7 @@ import {mapState} from 'vuex'
         // 更新数据
         this.food = food
         // 显示food组件界面
-        // this.$refs.food.toggleShow()
+        this.$refs.food.toggleShow()
       } 
     },
 

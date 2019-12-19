@@ -4,6 +4,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import Header from './components/header/header.vue'
+import CartControl from "./components/cartControl/cartControl.vue";
 import './vee';
 import i18n from './i18n'
 import * as API from './api'
@@ -14,6 +15,7 @@ Vue.prototype.$API = API
 Vue.config.productionTip = false
 Vue.component('Header',Header)
 Vue.component('Star',Star)
+Vue.component('CartControl',CartControl)
 
 new Vue({
   render: h => h(App),

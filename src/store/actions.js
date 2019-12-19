@@ -20,7 +20,9 @@ import {
   RESET_TOKEN,
   RECEIVE_INFO,
   RECEIVE_RATINGS,
-  RECEIVE_GOODS
+  RECEIVE_GOODS,
+  ADD_FOOD_COUNT,
+  REDUCE_FOOD_COUNT
 } from './mutation_type'
 
 export default {
@@ -113,4 +115,11 @@ export default {
       typeof cb==='function' && cb()
     }
   },
+  async updateFoodCount ({commit}, {isAdd, food}) {
+    if (isAdd) {
+      commit(ADD_FOOD_COUNT, {food})
+    } else {
+      commit(REDUCE_FOOD_COUNT, {food})
+    }
+  }
 }
